@@ -1,0 +1,45 @@
+spring:
+  datasource:
+    hikari:
+      maximum-pool-size: 30
+      max-lifetime: 60000
+      jdbc-url: jdbc:mysql://localhost/user_lock
+      username: root
+      password: root
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      connection-timeout: 5000
+      pool-name: Spring-HikariPool
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        default_batch_fetch_size: 16
+        format_sql: true
+    open-in-view: false
+  flyway:
+    clean-disabled: false
+
+userlock:
+  datasource:
+    hikari:
+      maximum-pool-size: 20
+      max-lifetime: 60000
+      jdbc-url: jdbc:mysql://localhost/user_lock
+      username: root
+      password: root
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      connection-timeout: 5000
+      pool-name: UserLock-HikariPool
+
+# 예제 실행시 쿼리 확인 하려면 아래 주석 해제해주세요.
+
+#logging:
+#  level:
+#    org.hibernate:
+#      SQL: debug
+#      tool.hbm2ddl: debug
+#      type: trace
+#      stat: debug
+#      type.BasicTypeRegistry: warn
+#    org.springframework.jdbc: debug
