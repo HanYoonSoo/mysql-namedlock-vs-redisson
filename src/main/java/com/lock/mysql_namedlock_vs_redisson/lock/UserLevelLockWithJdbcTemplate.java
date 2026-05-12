@@ -27,11 +27,15 @@ public class UserLevelLockWithJdbcTemplate {
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     public <T> T executeWithLock(String userLockName, int timeoutSeconds, Supplier<T> supplier) {
+        boolean locked = false;
         try {
             getLock(userLockName, timeoutSeconds);
+            locked = true;
             return supplier.get();
         } finally {
-            releaseLock(userLockName);
+            if (locked) {
+                releaseLock(userLockName);
+            }
         }
     }
 
@@ -42,7 +46,6 @@ public class UserLevelLockWithJdbcTemplate {
         Map<String, Object> params = new HashMap<>();
         params.put("userLockName", userLockName);
         params.put("timeoutSeconds", timeoutSeconds);
-        log.info("GetLock!! userLockName : [{}], timeoutSeconds : [{}]", userLockName, timeoutSeconds);
         Integer result = namedParameterJdbcTemplate.queryForObject(GET_LOCK, params, Integer.class);
         checkResult(result, userLockName, "GetLock");
     }
@@ -55,7 +58,6 @@ public class UserLevelLockWithJdbcTemplate {
         Map<String, Object> params = new HashMap<>();
         params.put("userLockName", userLockName);
 
-        log.info("ReleaseLock!! userLockName : [{}]", userLockName);
         Integer result = namedParameterJdbcTemplate.queryForObject(RELEASE_LOCK, params, Integer.class);
         checkResult(result, userLockName, "ReleaseLock");
     }
