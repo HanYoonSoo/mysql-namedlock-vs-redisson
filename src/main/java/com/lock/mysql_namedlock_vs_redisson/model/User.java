@@ -17,7 +17,7 @@ import java.util.Set;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class User {
 
-    public static final int MAXIMUM_TIKET_COUNT = 2;
+    public static final int MAXIMUM_TICKET_COUNT = 2;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,14 +37,14 @@ public class User {
 
     public void addTicket(Ticket ticket) {
         if (isMaxTicketCount()) {
-            throw new IllegalStateException("최대 수량을 초과하였습니다. 최대수량 : "+ MAXIMUM_TIKET_COUNT +", 현재 크기 : "+ getTicketCount());
+            throw new IllegalStateException("최대 수량을 초과하였습니다. 최대수량 : "+ MAXIMUM_TICKET_COUNT +", 현재 크기 : "+ getTicketCount());
         }
         ticket.setUser(this);
         this.tickets.add(ticket);
     }
 
     private boolean isMaxTicketCount() {
-        return getTicketCount() >= MAXIMUM_TIKET_COUNT;
+        return getTicketCount() >= MAXIMUM_TICKET_COUNT;
     }
 
     public int getTicketCount() {
