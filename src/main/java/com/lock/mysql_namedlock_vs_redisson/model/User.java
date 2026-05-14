@@ -17,7 +17,7 @@ import java.util.Set;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class User {
 
-    public static final int MAXIMUM_TICKET_COUNT = 2;
+    public static final int MAXIMUM_TICKET_COUNT = 1_000_000;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

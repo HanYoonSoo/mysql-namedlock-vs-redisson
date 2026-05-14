@@ -10,10 +10,15 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class FinalRequest {
 
-    private static final int THREAD_COUNT = 31;
+    private static final int THREAD_COUNT = 30;
 
     public static void main(String[] args) {
-        RequestUtil.concurrentPost(THREAD_COUNT, UserController.ADD_TICKET_URI_FINAL, 1L);
+        RequestUtil.concurrentPost(
+                THREAD_COUNT,
+                UserController.ADD_TICKET_URI_FINAL,
+                requestIndex -> new Object[]{requestIndex + 1L}
+//                1L
+        );
     }
 
 }
