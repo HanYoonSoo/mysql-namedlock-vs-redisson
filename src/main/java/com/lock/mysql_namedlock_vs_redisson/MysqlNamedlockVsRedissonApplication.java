@@ -2,8 +2,10 @@ package com.lock.mysql_namedlock_vs_redisson;
 
 import com.lock.mysql_namedlock_vs_redisson.lock.UserLevelLockFinal;
 import com.lock.mysql_namedlock_vs_redisson.lock.UserLevelLockFinalWithDefaultDataSource;
+import com.lock.mysql_namedlock_vs_redisson.lock.UserLevelLockWithRedisson;
 import com.lock.mysql_namedlock_vs_redisson.lock.UserLevelLockWithJdbcTemplate;
 import com.zaxxer.hikari.HikariDataSource;
+import org.redisson.api.RedissonClient;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.flyway.FlywayMigrationStrategy;
@@ -55,5 +57,10 @@ public class MysqlNamedlockVsRedissonApplication {
     @Bean
     public UserLevelLockFinalWithDefaultDataSource userLevelLockFinalWithDefaultDataSource(HikariDataSource dataSource) {
         return new UserLevelLockFinalWithDefaultDataSource(dataSource);
+    }
+
+    @Bean
+    public UserLevelLockWithRedisson userLevelLockWithRedisson(RedissonClient redissonClient) {
+        return new UserLevelLockWithRedisson(redissonClient);
     }
 }

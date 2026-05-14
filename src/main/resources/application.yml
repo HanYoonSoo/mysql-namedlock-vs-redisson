@@ -32,6 +32,13 @@ userlock:
       connection-timeout: 5000
       pool-name: UserLock-HikariPool
 
+redis:
+  host: localhost
+  port: 15501
+  password: password
+  database: 0
+  ssl-enabled: false
+
 # 예제 실행시 쿼리 확인 하려면 아래 주석 해제해주세요.
 
 #logging:

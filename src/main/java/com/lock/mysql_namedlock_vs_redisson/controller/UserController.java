@@ -2,6 +2,7 @@ package com.lock.mysql_namedlock_vs_redisson.controller;
 
 import com.lock.mysql_namedlock_vs_redisson.lock.UserLevelLockFinal;
 import com.lock.mysql_namedlock_vs_redisson.lock.UserLevelLockFinalWithDefaultDataSource;
+import com.lock.mysql_namedlock_vs_redisson.lock.UserLevelLockWithRedisson;
 import com.lock.mysql_namedlock_vs_redisson.lock.UserLevelLockWithJdbcTemplate;
 import com.lock.mysql_namedlock_vs_redisson.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +21,7 @@ public class UserController {
     public static final String ADD_TICKET_URI_WITH_TEMPLATE = "http://localhost:8080/users/{userId}/add-new-ticket-with-template";
     public static final String ADD_TICKET_URI_FINAL = "http://localhost:8080/users/{userId}/add-new-ticket-final";
     public static final String ADD_TICKET_URI_FINAL_WITH_DEFAULT_DATA_SOURCE = "http://localhost:8080/users/{userId}/add-new-ticket-final-with-default-data-source";
+    public static final String ADD_TICKET_URI_WITH_REDISSON = "http://localhost:8080/users/{userId}/add-new-ticket-with-redisson";
 
     private static final int LOCK_TIMEOUT_SECONDS = 3;
 
@@ -27,6 +29,7 @@ public class UserController {
     private final UserLevelLockWithJdbcTemplate userLevelLockWithJdbcTemplate;
     private final UserLevelLockFinal userLevelLockFinal;
     private final UserLevelLockFinalWithDefaultDataSource userLevelLockFinalWithDefaultDataSource;
+    private final UserLevelLockWithRedisson userLevelLockWithRedisson;
 
     /**
      * USER LEVEL LOCK 사용 하지 않는다.
@@ -69,6 +72,18 @@ public class UserController {
                 String.valueOf(userId),
                 LOCK_TIMEOUT_SECONDS,
                 () -> userService.addNewTicketRequiresNew(userId)
+        );
+    }
+
+    /**
+     * Redisson Lock 을 사용하는 버전.
+     */
+    @PostMapping("/{userId}/add-new-ticket-with-redisson")
+    public int addNewTicketWithRedisson(@PathVariable Long userId) {
+        return userLevelLockWithRedisson.executeWithLock(
+                String.valueOf(userId),
+                LOCK_TIMEOUT_SECONDS,
+                () -> userService.addNewTicket(userId)
         );
     }
 
